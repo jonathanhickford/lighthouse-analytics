@@ -7,22 +7,22 @@
 
 library(shiny)
 
-shinyUI(pageWithSidebar(
+shinyUI(fluidPage(
+  titlePanel("title panel"),
   
-  # Application title
-  headerPanel("Old Faithful Geyser Data"),
-  
-  # Sidebar with a slider input for number of bins
-  sidebarPanel(
-    sliderInput("bins",
-                "Number of bins:",
-                min = 1,
-                max = 50,
-                value = 30)
-  ),
-  
-  # Show a plot of the generated distribution
-  mainPanel(
-    plotOutput("distPlot")
+  sidebarLayout(
+    sidebarPanel(
+      checkboxGroupInput("axes", 
+                         label = h3("Checkbox group"), 
+                         choices = list("Total.teams.in.last.30.days" = "Total.teams.in.last.30.days", 
+                                        "New.teams.in.last.30.days" = "New.teams.in.last.30.days", 
+                                        "Engaged.teams.in.last.30.days" = "Engaged.teams.in.last.30.days",
+                                        "Retained.teams.in.last.30.days" = "Retained.teams.in.last.30.days"
+                                        ),
+                         selected = c("Total.teams.in.last.30.days", "Engaged.teams.in.last.30.days"))
+      ),
+    mainPanel(
+      plotOutput("plot1")
+      )
   )
 ))

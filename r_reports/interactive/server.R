@@ -6,17 +6,18 @@
 #
 
 library(shiny)
+library(reshape2)
+library(ggplot2)
+usage.wide = read.csv(file.path("..", "..", "usage-reports-new-account","usage-new-account.rb_output.csv"))
+usage.long = melt(usage.wide, id.vars=c("Period.ending.on"))
+usage.long$"Period.ending.on" <- as.Date(usage.wide$"Period.ending.on","%Y-%m-%d")
 
 shinyServer(function(input, output) {
    
-  output$distPlot <- renderPlot({
+  output$plot1 <- renderPlot({
+    input$axes
     
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2] 
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    qplot(Period.ending.on, value, data = subset(usage.long,variable %in% input$axes), color = variable, group = variable, geom = c("point", "line"))
     
   })
   
