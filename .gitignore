@@ -1,0 +1,9 @@
+client_secrets*.json
+*-oauth2.json
+*.cache
+output.csv
+.Rproj.user
+old_not_converted
+*.Rhistory
+*_output.csv
+*.html

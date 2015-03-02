@@ -1,0 +1,27 @@
+---
+title: "DLM Dashboard Retention"
+author: "Jonathan Hickford"
+date: "Monday, March 02, 2015"
+output: html_document
+---
+
+Load data
+
+```{r}
+library(ggplot2)
+retention.wide = read.csv(file.path("..", "retention-engaged-new-account","retention-engaged-new-account.rb_output.csv"))
+
+retention.wide$"Period" <- as.Date(retention.wide$"Period","%Y-%m-%d")
+```
+
+Plot
+
+```{r, echo=FALSE}
+ggplot(retention.wide, aes(Period, Engaged.Users, fill=First.Use.In)) + geom_bar(stat="identity")
+```
+
+Plot
+
+```{r, echo=FALSE}
+ggplot(retention.wide, aes(x=Period, y=Engaged.Users, group=First.Use.In)) + geom_area(aes(fill = First.Use.In, position = "stack"))
+```
