@@ -121,6 +121,21 @@ def get_engaged_users(profile, client, analytics, start_date, end_date)
   result.data['totalsForAllResults']['ga:users'] if result.data['totalsForAllResults']
 end
 
+def get_engaged_new_users(profile, client, analytics, start_date, end_date)
+  result = client.execute(
+    :api_method => analytics.data.ga.get,
+    :parameters => {
+      'ids' => profile,
+      'start-date' => start_date.strftime("%F"),
+      'end-date' => end_date.strftime("%F"),
+      'metrics' => 'ga:newUsers',
+      'fields' => 'totalsForAllResults',
+      'segment' => "users::condition::ga:dimension2!=0;ga:sessionCount>=2;ga:daysSinceLastSession<=14"
+    }
+  )
+  result.data['totalsForAllResults']['ga:newUsers'] if result.data['totalsForAllResults']
+end
+
 def get_retained_users(profile, client, analytics, start_date, end_date)
   result = client.execute(
     :api_method => analytics.data.ga.get,
@@ -150,7 +165,7 @@ def get_engaged_users_with_cohort(profile, client, analytics, start_date, end_da
       'segment' => "users::condition::ga:dimension2!=0;ga:daysSinceLastSession<=14;ga:sessionCount==1;dateOfSession<>#{cohort_start_date.strftime("%F")}_#{cohort_end_date.strftime("%F")}"
     }
   )
-  result.data['totalsForAllResults']['ga:users']
+  result.data['totalsForAllResults']['ga:users'] if result.data['totalsForAllResults']
 end
 
 
