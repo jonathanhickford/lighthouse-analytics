@@ -1,16 +1,12 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'google/api_client'
-require 'google/api_client/client_secrets'
-require 'google/api_client/auth/file_storage'
-require 'google/api_client/auth/installed_app'
 require 'CSV'
 
-require '../common/lighthouse_analytics'
+require File.join(__dir__, '../common/lighthouse_analytics')
 
-CACHED_DATA_STORE = "datastore.cache"
-OUTPUT_CSV = "#{$0}_output.csv"
+CACHED_DATA_STORE = File.join(__dir__, "datastore.cache")
+OUTPUT_CSV = "#{$0}".ext('.csv')
 
 #GA_PROFILE = 'ga:89776902' # Old account id
 GA_PROFILE = 'ga:96336725' # New excluding Redgate id
@@ -36,9 +32,9 @@ if __FILE__ == $0
 	client, analytics = setup_google()
 	datastore = setup_datastore()
 
-	start_date_range = Date.new(2015, 1, 12)   # A Monday
+	start_date_range = Date.new(2015, 1, 11)   # A Sunday
   end_date_range = Date.today
-  end_date_range -= end_date_range.wday   # A Sunday
+  end_date_range -= end_date_range.wday   # A Monday
 
 	# Itterate over weeks in report range
   (start_date_range..end_date_range).step(7).each do |start_date|
@@ -56,7 +52,7 @@ if __FILE__ == $0
       datastore[date_key][cohort_key] = Hash.new if !datastore[date_key].key?(cohort_key)
      
       refreshed = false
-      if !datastore[date_key][cohort_key].key?('total_users') # or start_date.cweek == end_date_range.cweek
+      if !datastore[date_key][cohort_key].key?('total_users')  or start_date.cweek == end_date_range.cweek
         refreshed = true
         datastore[date_key][cohort_key]['total_users'] = get_engaged_users_with_cohort(GA_PROFILE, client, analytics, start_date, end_date, cohort_start_date, cohort_end_date)
       end  

@@ -8,7 +8,7 @@
 library(shiny)
 library(reshape2)
 library(ggplot2)
-usage.wide = read.csv(file.path("..", "..", "usage-reports-new-account","usage-new-account.rb_output.csv"))
+usage.wide = read.csv(file.path(".", "data","usage-new-account.csv"))
 usage.long = melt(usage.wide, id.vars=c("Period.ending.on"))
 usage.long$"Period.ending.on" <- as.Date(usage.wide$"Period.ending.on","%Y-%m-%d")
 

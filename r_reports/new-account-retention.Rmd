@@ -1,7 +1,6 @@
 ---
 title: "DLM Dashboard Retention"
-author: "Jonathan Hickford"
-date: "Monday, March 02, 2015"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -9,7 +8,7 @@ Load data
 
 ```{r}
 library(ggplot2)
-retention.wide = read.csv(file.path("..", "retention-engaged-new-account","retention-engaged-new-account.rb_output.csv"))
+retention.wide = read.csv(file.path("..", "retention-engaged-new-account","retention-engaged-new-account.csv"))
 
 retention.wide$"Period" <- as.Date(retention.wide$"Period","%Y-%m-%d")
 ```

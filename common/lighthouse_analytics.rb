@@ -1,3 +1,9 @@
+require 'google/api_client'
+require 'google/api_client/client_secrets'
+require 'google/api_client/auth/file_storage'
+require 'google/api_client/auth/installed_app'
+require 'rake/ext/string'
+
 API_VERSION = 'v3'
 CACHED_API_FILE = File.dirname(__FILE__) + "/analytics-#{API_VERSION}.cache"
 CREDENTIAL_STORE_FILE = File.dirname(__FILE__) + "/lighthouse_analytics-oauth2.json"

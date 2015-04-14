@@ -1,23 +1,26 @@
 ---
 title: "DLM Dashboard Usage"
-author: "Jonathan Hickford"
-date: "Monday, March 02, 2015"
+date: "Generated on: `r Sys.Date()`"
 output: html_document
 ---
 
-Load data
-
-```{r}
+```{r, echo=FALSE}
 library(reshape2)
 library(ggplot2)
-usage.wide = read.csv(file.path("..", "usage-reports-new-account","usage-new-account.rb_output.csv"))
+usage.wide = read.csv(file.path("..", "usage-reports-new-account","usage-new-account.csv"))
 usage.long = melt(usage.wide, id.vars=c("Period.ending.on"))
 usage.long$"Period.ending.on" <- as.Date(usage.wide$"Period.ending.on","%Y-%m-%d")
 ```
 
-Plot
+```{r, echo=FALSE,fig.width=9, fig.height=7}
+axes <- c("Total.teams.in.last.30.days", "Engaged.teams.in.last.30.days")
+subdata1 <- subset(usage.long, variable %in% axes[1])
+subdata2 <- subset(usage.long, variable %in% axes[2])
+subdata <- rbind(subdata1,subdata2)
+labeldata <- rbind(tail(subdata1, n=1),tail(subdata2, n=1))
 
-```{r, echo=FALSE}
-qplot(Period.ending.on, value, data = usage.long, color = variable, group = variable, geom = c("point", "line"))
+
+p <- ggplot(subdata, aes(Period.ending.on, value+29, color = variable, group = variable))
+p + geom_point() + geom_line() + geom_text(data = labeldata,  aes(Period.ending.on, value+29, label = value+29, vjust = 3)) + xlab("Period Ending On") + ylab("Teams")
+
 ```
-

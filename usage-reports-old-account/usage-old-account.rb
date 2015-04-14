@@ -1,16 +1,13 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'google/api_client'
-require 'google/api_client/client_secrets'
-require 'google/api_client/auth/file_storage'
-require 'google/api_client/auth/installed_app'
+
 require 'CSV'
 
-require '../common/lighthouse_analytics'
+require File.join(__dir__, '../common/lighthouse_analytics')
 
-CACHED_DATA_STORE = "datastore.cache"
-OUTPUT_CSV = "#{$0}_output.csv"
+CACHED_DATA_STORE = File.join(__dir__, "datastore.cache")
+OUTPUT_CSV = "#{$0}".ext('.csv')
 
 GA_PROFILE = 'ga:89776902' # Old account id
 #GA_PROFILE = 'ga:96336725' # New excluding Redgate id
