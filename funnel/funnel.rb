@@ -8,23 +8,25 @@ require File.join(__dir__, '../common/lighthouse_analytics')
 CACHED_DATA_STORE = File.join(__dir__, "datastore.cache")
 OUTPUT_CSV = "#{$0}".ext('.csv')
 
-#GA_PROFILE = 'ga:89776902' # Old account id
-GA_PROFILE = 'ga:96336725' # New excluding Redgate id
+GA_PROFILE_LIGHTHOUSE_OLD = 'ga:89776902' # Old account id
+GA_PROFILE_LIGHTHOUSE = 'ga:96336725' # New excluding Redgate id
+GA_PROFILE_REDGATE = 'ga:53846' # Redgate - www.redgate.com
 
 
 
 def output_csv(datastore)
 	CSV.open(OUTPUT_CSV, "wb") do |csv|
-		csv <<   ["Period ending on", "Total teams in last 30 days", "New teams in last 30 days", "Engaged teams in last 30 days", "Retained teams in last 30 days"]
+		csv <<   ["Month", "Product Pageviews", "Downloads", "New installs", "New Engaged teams", "Total installs", "Total Engaged teams" ]
 		
-		datastore.keys.sort.each do |end_date|
-			csv << [ end_date, 
-
-				datastore[end_date]['total in last 30 days'],
-				datastore[end_date]['new in last 30 days'],
-				datastore[end_date]['engaged in last 30 days'],
-				datastore[end_date]['retained in last 30 days']
-
+		datastore.keys.sort.each do |date_key|
+			csv << [ 
+				Date.strptime(date_key.split('_')[0], '%Y-%m-%d').strftime("%Y-%m"),
+				datastore[date_key]['product pageviews'],
+				datastore[date_key]['downloads'],
+				datastore[date_key]['new installs'],
+				datastore[date_key]['engaged new installs'],
+				datastore[date_key]['total installs'],
+				datastore[date_key]['engaged installs']
 			]
 		end
 	end
@@ -55,34 +57,44 @@ if __FILE__ == $0
 		datastore[date_key] = Hash.new if !datastore.key?(date_key)
 
 		unless datastore[date_key].key?('total installs')
-			datastore[date_key]['total installs'] = get_total_users(GA_PROFILE, client, analytics, start_date, end_date)
+			datastore[date_key]['total installs'] = get_total_users(GA_PROFILE_LIGHTHOUSE, client, analytics, start_date, end_date)
 		end
 
 		unless datastore[date_key].key?('new installs')
-			datastore[date_key]['new installs'] = get_new_users(GA_PROFILE, client, analytics, start_date, end_date)
+			datastore[date_key]['new installs'] = get_new_users(GA_PROFILE_LIGHTHOUSE, client, analytics, start_date, end_date)
 		end
 
 		unless datastore[date_key].key?('engaged installs')
-			datastore[date_key]['engaged installs'] = get_engaged_users(GA_PROFILE, client, analytics, start_date, end_date)
+			datastore[date_key]['engaged installs'] = get_engaged_users(GA_PROFILE_LIGHTHOUSE, client, analytics, start_date, end_date)
 		end
 
-				unless datastore[date_key].key?('engaged new installs')
-			datastore[date_key]['engaged new installs'] = get_engaged_new_users(GA_PROFILE, client, analytics, start_date, end_date)
+		unless datastore[date_key].key?('engaged new installs')
+			datastore[date_key]['engaged new installs'] = get_engaged_new_users(GA_PROFILE_LIGHTHOUSE, client, analytics, start_date, end_date)
 		end
 
-	
+		# From Redgate account
+		unless datastore[date_key].key?('downloads')
+			datastore[date_key]['downloads'] = get_total_downloads(GA_PROFILE_REDGATE, client, analytics, start_date, end_date)
+		end
 
+		unless datastore[date_key].key?('product pageviews')
+			datastore[date_key]['product pageviews'] = get_total_product_page_views(GA_PROFILE_REDGATE, client, analytics, start_date, end_date)
+		end
+
+		
 		puts date_key +
 			" " + datastore[date_key]['total installs'].to_s +
 			" " + datastore[date_key]['new installs'].to_s + 
 			" " + datastore[date_key]['engaged installs'].to_s + 
-			" " + datastore[date_key]['engaged new installs'].to_s
+			" " + datastore[date_key]['engaged new installs'].to_s + 
+			" " + datastore[date_key]['downloads'].to_s +
+			" " + datastore[date_key]['product pageviews'].to_s
 
 	end
 
-	#save_datastore(datastore)
+	save_datastore(datastore)
 
-	#output_csv(datastore)
+	output_csv(datastore)
 end
 
 

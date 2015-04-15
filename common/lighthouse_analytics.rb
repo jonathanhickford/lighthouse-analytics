@@ -157,7 +157,7 @@ def get_engaged_users_with_cohort(profile, client, analytics, start_date, end_da
   result = client.execute(
     :api_method => analytics.data.ga.get,
     :parameters => {
-      'ids' => GA_PROFILE,
+      'ids' => profile,
       'start-date' => start_date.strftime("%F"),
       'end-date' => end_date.strftime("%F"),
       'metrics' => 'ga:users',
@@ -169,14 +169,42 @@ def get_engaged_users_with_cohort(profile, client, analytics, start_date, end_da
 end
 
 
+def get_total_downloads(profile, client, analytics, start_date, end_date)
+  download_events = %w(/products/dlm/dlm-dashboard/ /products/dlm/dlm-dashboard/entrypage/ /products/dlm/sql-lighthouse/)
+  download_events.map! { |url| "ga:eventLabel==" + url}
+  filters = download_events.join(',')
+
+  result = client.execute(
+    :api_method => analytics.data.ga.get,
+    :parameters => {
+      'ids' => profile,
+      'start-date' => start_date.strftime("%F"),
+      'end-date' => end_date.strftime("%F"),
+      'metrics' => 'ga:totalEvents',
+      'filters' => filters,
+      'fields' => 'totalsForAllResults'
+    }
+  )
+  result.data['totalsForAllResults']['ga:totalEvents'] if result.data['totalsForAllResults']
+end
 
 
 
 
-
-
-
-
+def get_total_product_page_views(profile, client, analytics, start_date, end_date)
+  result = client.execute(
+    :api_method => analytics.data.ga.get,
+    :parameters => {
+      'ids' => profile,
+      'start-date' => start_date.strftime("%F"),
+      'end-date' => end_date.strftime("%F"),
+      'metrics' => 'ga:pageviews',
+      'filters' => 'ga:pagePathLevel1==/products/;ga:pagePathLevel2==/dlm/;ga:pagePathLevel3==/dlm-dashboard/,ga:pagePathLevel3==/sql-lighthouse/', # products AND dlm AND (dlm-dashboard OR sql-lighthouse)
+      'fields' => 'totalsForAllResults'
+    }
+  )
+  result.data['totalsForAllResults']['ga:pageviews'] if result.data['totalsForAllResults']
+end
 
 
 
