@@ -18,9 +18,3 @@ Plot
 ```{r, echo=FALSE}
 ggplot(retention.wide, aes(Period, Engaged.Users, fill=First.Use.In)) + geom_bar(stat="identity")
 ```
-
-Plot
-
-```{r, echo=FALSE}
-ggplot(retention.wide, aes(x=Period, y=Engaged.Users, group=First.Use.In)) + geom_area(aes(fill = First.Use.In, position = "stack"))
-```

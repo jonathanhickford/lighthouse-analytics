@@ -20,7 +20,8 @@ subdata <- rbind(subdata1,subdata2)
 labeldata <- rbind(tail(subdata1, n=1),tail(subdata2, n=1))
 
 
-p <- ggplot(subdata, aes(Period.ending.on, value+29, color = variable, group = variable))
-p + geom_point() + geom_line() + geom_text(data = labeldata,  aes(Period.ending.on, value+29, label = value+29, vjust = 3)) + xlab("Period Ending On") + ylab("Teams")
+fudge_factor <- 12
+p <- ggplot(subdata, aes(Period.ending.on, value+fudge_factor, color = variable, group = variable))
+p + geom_point() + geom_line() + geom_text(data = labeldata,  aes(Period.ending.on, value+fudge_factor, label = value+fudge_factor, vjust = 3)) + xlab("Period Ending On") + ylab("Teams")
 
 ```

@@ -34,7 +34,7 @@ if __FILE__ == $0
 
 	start_date_range = Date.new(2015, 1, 11)   # A Sunday
   end_date_range = Date.today
-  end_date_range -= end_date_range.wday   # A Monday
+  end_date_range -= end_date_range.wday   # A Sunday
 
 	# Itterate over weeks in report range
   (start_date_range..end_date_range).step(7).each do |start_date|

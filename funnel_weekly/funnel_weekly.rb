@@ -16,11 +16,11 @@ GA_PROFILE_REDGATE = 'ga:53846' # Redgate - www.redgate.com
 
 def output_csv(datastore)
 	CSV.open(OUTPUT_CSV, "wb") do |csv|
-		csv <<   ["Month", "Product Pageviews", "Downloads", "New installs", "New Engaged teams", "Total installs", "Total Engaged teams" ]
+		csv <<   ["Date Range", "Product Pageviews", "Downloads", "New Installs", "New Engaged Teams", "Total Installs", "Total Engaged Teams" ]
 		
 		datastore.keys.sort.each do |date_key|
 			csv << [ 
-				Date.strptime(date_key.split('_')[0], '%Y-%m-%d').strftime("%Y-%m"),
+				date_key,
 				datastore[date_key]['product pageviews'],
 				datastore[date_key]['downloads'],
 				datastore[date_key]['new installs'],
@@ -39,17 +39,19 @@ if __FILE__ == $0
 	client, analytics = setup_google()
 	datastore = setup_datastore()
 
-	today = Date.today
-  start_range = Date.new(2014,11,1)
-  end_range = Date.new(today.year, today.month, 1) - 1
+	start_date_range = Date.new(2015, 1, 11)   # A Sunday
+  end_date_range = Date.today 
+  end_date_range -= end_date_range.wday  # A Sunday
+  end_date_range -= 1 # A Saturday
 
-  #puts start_range
-  #puts end_range
+  #puts start_date_range
+  #puts end_date_range
 
 
-	(start_range..end_range).select {|d| d.day == 1}.each do |start_date|
+	# Itterate over weeks in report range
+  (start_date_range..end_date_range).step(7).each do |start_date|
+    end_date = start_date + 6
 
-		end_date = Date.new(start_date.year,start_date.month,-1)
 		date_key =  "#{start_date}_#{end_date}"
 
 		#puts date_key
