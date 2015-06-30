@@ -1,0 +1,27 @@
+---
+title: "DLM Dashboard Daily Funnel"
+date: "Generated on: `r Sys.Date()`"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(reshape2)
+library(ggplot2)
+usage.wide = read.csv(file.path("..", "funnel_daily","funnel_daily.csv"))
+usage.long = melt(usage.wide, id.vars=c("Date"))
+usage.long$"Date" <- as.Date(usage.wide$"Date","%Y-%m-%d")
+```
+
+```{r, echo=FALSE,fig.width=9, fig.height=7}
+#"Product.Pageviews"
+
+start_date = Sys.Date() - 14
+
+axes <- c("Downloads", "New.Installs", "New.Engaged.Teams")
+subdata <- subset(usage.long, variable %in% axes)
+subdata <- subset(subdata, Date >= start_date)
+
+p <- ggplot(subdata, aes(Date, value, fill=variable))
+p + geom_bar(stat = "identity",position="dodge")  + theme(axis.text.x  = element_text(angle=90, vjust=0.5))  + labs(fill = "Funnel Stage")
+
+```
