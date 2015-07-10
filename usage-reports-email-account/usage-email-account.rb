@@ -10,7 +10,7 @@ OUTPUT_CSV = "#{$0}".ext('.csv')
 
 #GA_PROFILE = 'ga:89776902' # Old account id
 #GA_PROFILE = 'ga:96336725' # New excluding Redgate id
-GA_PROFILE = 'ga:103931313' # Email excluding Redgate id
+GA_PROFILE = 'ga:103927286' # Email excluding Redgate id
 
 
 
