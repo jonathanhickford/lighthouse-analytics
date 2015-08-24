@@ -5,6 +5,7 @@
 ###Generating csv files from Google Analytics
 
  - Install Ruby, I'm using ruby 2.0.0p451, but it shouldn't really matter
+ - If you're on Windows then Ruby doesn't install a trusted SSL certificated which you'll need.  Follow instructions on https://gist.github.com/fnichol/867550 to add one
  - From the checked out directory run ```$ gem install bundler```
  - From the checked out directory run ```$ bundle install``` to install the required dependecies
  - Go to the Google Developer Console https://console.developers.google.com/ as any user who has access to the Google Analytics property
@@ -19,8 +20,10 @@
 
 ###Generating R graphs from the csv files
 
- - Install R, I used RStudio (https://www.rstudio.com/)
+ - Install R
  - Make sure R is on the path if you want to automation the generation of reports
+ - Install Pandoc (http://pandoc.org/) or install RStudio (https://www.rstudio.com/)
+ - Make sure Pandoc is on the path if you want to automation the generation of reports.  It's installed in the RStudio binaries folder, or where you installed it natively
  - Install the following R package libaries  (in RStudio it's under Tools->Install Packages...)
   - reshape2
   - ggplot2
@@ -32,9 +35,8 @@
 
 ##Generating the graphs from RSudio
  - From within RStudio open one of the .rmd files in the 'r_reports/' folder
- - Set the R working folder to be the folder containing the .rmd file (ession->Set Working Directory->To Source File Location)
+ - Set the R working folder to be the folder containing the .rmd file (Session->Set Working Directory->To Source File Location)
  - Press 'Knit HTML' to generate the HTML graph
-
 
 ##Automation and copying to sharepoint
 This uses the Rakefile in the project root
