@@ -38,4 +38,4 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  google-api-client
+  google-api-client (= 0.7.1)

@@ -5,16 +5,17 @@
 ###Generating csv files from Google Analytics
 
  - Install Ruby, I'm using ruby 2.0.0p451, but it shouldn't really matter
- - Run ```$ bundle install``` to install the required dependecies
+ - From the checked out directory run ```$ gem install bundler```
+ - From the checked out directory run ```$ bundle install``` to install the required dependecies
  - Go to the Google Developer Console https://console.developers.google.com/ as any user who has access to the Google Analytics property
   - Select the 'Lighthouse Analytics' project
   - Go to the APIs & auth section and click credentials
   - Choose an existing OAuth 2.0 client ID, or create a new one
   - Click download JSON
   - Save the file as 'client_secrets.json' in the common/ folder of the checked out project
- - Run one of the reports```$ ruby usage-reports-email-account/usage-reports-email-account.rb```
+ - Run one of the reports```$ ruby usage-reports-email-account/usage-email-account.rb```
  - This should open a web browser to let you authenticate using the same credentials as you used to download the client secrets
- - The script should now continue to run and generate a csv file in the folder, e.g 'ruby usage-reports-email-account/usage-reports-email-account.csv'
+ - The script should now continue to run and generate a csv file in the folder, e.g 'ruby usage-reports-email-account/usage-email-account.csv'
 
 ###Generating R graphs from the csv files
 
@@ -26,8 +27,8 @@
 
 ##Generating the csv files from Google Analytics
  - Once the install flow above has been completed simply run the ruby file in each folder to generate that report, e.g.
- - ```$ ruby usage-reports-email-account/usage-reports-email-account.rb```
- - The CSV file will be generated in the same directory as the ruby file, e.g 'ruby usage-reports-email-account/usage-reports-email-account.csv'
+ - ```$ ruby usage-reports-email-account/usage-email-account.rb```
+ - The CSV file will be generated in the same directory as the ruby file, e.g 'ruby usage-reports-email-account/usages-email-account.csv'
 
 ##Generating the graphs from RSudio
  - From within RStudio open one of the .rmd files in the 'r_reports/' folder
