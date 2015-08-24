@@ -12,6 +12,7 @@ OUTPUT_CSV = "#{$0}".ext('.csv')
 GA_PROFILE = 'ga:89776902' # Old account id
 #GA_PROFILE = 'ga:96336725' # New excluding Redgate id
 
+ROLLING_WINDOW=29
 
 
 def output_csv(datastore)
@@ -56,7 +57,7 @@ if __FILE__ == $0
 		datastore[end_date] = Hash.new if !datastore.key?(end_date)
 
 		#unless datastore[end_date].key?('active in last 30 days')
-		#	datastore[end_date]['active in last 30 days'] = get_active_users(GA_PROFILE, client, analytics, end_date-30, end_date)
+		#	datastore[end_date]['active in last 30 days'] = get_active_users(GA_PROFILE, client, analytics, end_date-ROLLING_WINDOW, end_date)
 		#end
 
 		#unless datastore[end_date].key?('active in last 7 days')
@@ -64,7 +65,7 @@ if __FILE__ == $0
 		#end
 
 		unless datastore[end_date].key?('total in last 30 days')
-			datastore[end_date]['total in last 30 days'] = get_total_users(GA_PROFILE, client, analytics, end_date-30, end_date)
+			datastore[end_date]['total in last 30 days'] = get_total_users(GA_PROFILE, client, analytics, end_date-ROLLING_WINDOW, end_date)
 		end
 
 		#unless datastore[end_date].key?('total in last 7 days')
@@ -72,7 +73,7 @@ if __FILE__ == $0
 		#end
 		
 		#unless datastore[end_date].key?('new active in last 30 days')
-		#	datastore[end_date]['new active in last 30 days'] = get_new_active_users(GA_PROFILE, client, analytics, end_date-30, end_date)
+		#	datastore[end_date]['new active in last 30 days'] = get_new_active_users(GA_PROFILE, client, analytics, end_date-ROLLING_WINDOW, end_date)
 		#end
 
 		#unless datastore[end_date].key?('new active in last 7 days')
@@ -80,7 +81,7 @@ if __FILE__ == $0
 		#end
 		
 		unless datastore[end_date].key?('new in last 30 days')
-			datastore[end_date]['new in last 30 days'] = get_new_users(GA_PROFILE, client, analytics, end_date-30, end_date)
+			datastore[end_date]['new in last 30 days'] = get_new_users(GA_PROFILE, client, analytics, end_date-ROLLING_WINDOW, end_date)
 		end
 
 		#unless datastore[end_date].key?('new in last 7 days')
@@ -88,11 +89,11 @@ if __FILE__ == $0
 		#end
 
 		unless datastore[end_date].key?('engaged in last 30 days')
-			datastore[end_date]['engaged in last 30 days'] = get_engaged_users(GA_PROFILE, client, analytics, end_date-30, end_date)
+			datastore[end_date]['engaged in last 30 days'] = get_engaged_users(GA_PROFILE, client, analytics, end_date-ROLLING_WINDOW, end_date)
 		end
 
 		unless datastore[end_date].key?('retained in last 30 days')
-			datastore[end_date]['retained in last 30 days'] = get_retained_users(GA_PROFILE, client, analytics, end_date-30, end_date)
+			datastore[end_date]['retained in last 30 days'] = get_retained_users(GA_PROFILE, client, analytics, end_date-ROLLING_WINDOW, end_date)
 		end
 
 		puts end_date.to_s +
