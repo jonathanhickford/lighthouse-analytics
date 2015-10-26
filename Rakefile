@@ -1,5 +1,7 @@
 require 'rake/clean'
 
+$stdout.sync = true
+
 R_SOURCE_FILES = Rake::FileList["**/*.rmd"]
 
 RUBY_SOURCE_FILES = Rake::FileList.new("**/*.rb") do |fl|
@@ -20,14 +22,19 @@ task :html => [:csv, R_SOURCE_FILES.ext(".html")].flatten
 
 rule ".csv" => ".rb" do |t|
   puts "Running #{t.source}"
-  puts `ruby #{t.source}`
-  cp t.name, SHAREPOINT_OUTPUT + File.basename(t.name)
+  run_command "ruby #{t.source}"
+  #cp t.name, SHAREPOINT_OUTPUT + File.basename(t.name)
 end
 
 rule ".html" => ".Rmd" do |t|
    puts "Running #{t.source}"
-   puts `R -e "rmarkdown::render('#{t.source}')"`
-   cp t.name, SHAREPOINT_OUTPUT + File.basename(t.name)
+   run_command "R -e \"rmarkdown::render('#{t.source}')\""
+   #cp t.name, SHAREPOINT_OUTPUT + File.basename(t.name)
+end
+
+
+def run_command(cmd)
+  IO.popen(cmd) { |f| puts f.gets }
 end
 
 

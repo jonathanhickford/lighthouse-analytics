@@ -9,7 +9,7 @@ CACHED_API_FILE = File.dirname(__FILE__) + "/analytics-#{API_VERSION}.cache"
 CREDENTIAL_STORE_FILE = File.dirname(__FILE__) + "/lighthouse_analytics-oauth2.json"
 CLIENT_SECRETS = File.dirname(__FILE__) + '/client_secrets.json'
 
-
+$stdout.sync = true
 
 def setup_google()
 
