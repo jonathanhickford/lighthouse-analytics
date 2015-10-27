@@ -1,7 +1,5 @@
 require 'rake/clean'
 
-$stdout.sync = true
-
 R_SOURCE_FILES = Rake::FileList["**/*.rmd"]
 
 RUBY_SOURCE_FILES = Rake::FileList.new("**/*.rb") do |fl|
@@ -34,7 +32,11 @@ end
 
 
 def run_command(cmd)
-  IO.popen(cmd) { |f| puts f.gets }
+  IO.popen(cmd) do |f| 
+    while (line = f.gets) do
+      puts line
+    end
+  end
 end
 
 
